@@ -1,0 +1,13 @@
+{
+    "name": "MTA MantisBT to GitHub",
+    "version": "1.0",
+    "description": "Migrate from MantisBT to GitHub",
+    "manifest_version": 2,
+
+    "content_scripts": [
+        {
+            "matches": ["https://bugs.mtasa.com/view.php*"],
+            "js": ["contentScript.js"]
+        }
+    ]
+}
