@@ -4,6 +4,8 @@
     "description": "Migrate from MantisBT to GitHub",
     "manifest_version": 2,
 
+    "background": { "scripts": ["hot-reload.js"] },
+
     "content_scripts": [
         {
             "matches": ["https://bugs.mtasa.com/view.php*"],
