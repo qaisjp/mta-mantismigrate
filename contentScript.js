@@ -1,4 +1,4 @@
-function buildGitHubBox(bugData) {
+function buildGitHubBox(bugData, templateText) {
     // Clone the note box
     const notebox = document.querySelector("#bugnoteadd").parentElement;
 
@@ -36,7 +36,7 @@ function buildGitHubBox(bugData) {
     // Change note to "description"
     const descrEl = cloned.querySelector("table>tbody>tr:nth-child(2)");
     descrEl.children[0].innerHTML = "Description";
-    descrEl.children[1].children[0].value = bugData.description;
+    descrEl.children[1].children[0].value = templateText;
 
     // Create a title obj
     const titleEl = document.createElement("tr");
@@ -73,17 +73,17 @@ async function useTemplate(template, label) {
     
     let resp = await fetch(url);
     
-    let val = await resp.text();
+    let templateText = await resp.text();
 
     // Skip yaml header + two newlines, slice the string
-    const headerEnd = val.indexOf("---", 3) + 5;
-    val = val.slice(headerEnd);
+    const headerEnd = templateText.indexOf("---", 3) + 5;
+    templateText = templateText.slice(headerEnd);
 
     // Get bug data
     const bugData = getBugData();
 
     // Build GitHub box
-    const box = buildGitHubBox(bugData);
+    const box = buildGitHubBox(bugData, templateText);
 
     // Build new url
     const buildURL = (title, body, assignee, withMilestone) => {
