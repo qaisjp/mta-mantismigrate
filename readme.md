@@ -1,7 +1,7 @@
 # mantismigrate
 
 ## This is a chrome extension
-Tested on Scientific Linux.
+Tested on Scientific Linux and macOS
 
 Built just for bugs.mtasa.com (no other domain, like multitheftauto.com. it might work but it's not supported).
 
