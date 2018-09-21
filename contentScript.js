@@ -121,6 +121,12 @@ async function useTemplate(template, label) {
     // Get bug data
     const bugData = getBugData();
 
+    // Set navbar not fixed top because space is important
+    // document.querySelector("#navbar").classList.remove("navbar-fixed-top");
+    document.querySelector("html").style.marginTop = "50vh";
+    document.querySelector("#main-container").style.paddingTop = "0";
+
+
     // Build GitHub box
     const box = buildGitHubBox(bugData, templateText);
 
