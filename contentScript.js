@@ -1,4 +1,9 @@
 function buildGitHubBox(bugData, templateText) {
+    const box = {
+        onCreateIssue: (title, body, withMilestone) => {},
+        onFinishIssue: () => {},
+    };
+
     // Clone the note box
     const notebox = document.querySelector("#bugnoteadd").parentElement;
 
@@ -59,11 +64,33 @@ You can syntax-highlight code by providing the language after the backticks, lik
 <strong>Once GH issue made: </strong>Paste the issue url below and click "comment & close".
     `;
 
+    // Grab the submit button and replace it
+    cloned.querySelector("input[type='submit']").outerHTML = `
+        <button id="mantismigrate-createissue" class="btn btn-primary btn-white btn-round">
+            Create issue on GitHub
+        </button>
+        <div class="input-group" id="mantismigrate-finishup" class="mantismigrate-hidden">
+            <span class="input-group-btn">
+            <button type=button class="btn btn-primary btn-white btn-round">
+            Finish up
+            </button>
+            </span>
+            <input type=text class="form-control" placeholder="https://github.com/multitheftauto/mtasa-blue/pull/100">
+        </div>
+    `
+
+    const createissue = cloned.querySelector("#mantismigrate-createissue").addEventListener("click", e => {
+        e.preventDefault();
+        box.onCreateIssue(
+            titleEl.querySelector("input").value,
+            descrEl.children[1].children[0].value,
+            checkboxInput.checked
+        )
+    })
+
+
     // Finally append
     notebox.parentElement.appendChild(cloned);
-
-    const box = {
-    };
 
     return box;
 }
@@ -98,7 +125,8 @@ async function useTemplate(template, label) {
             url += `assignee=${encodeURIComponent(assignee)}&`;
         }
         url += `title=${encodeURIComponent(title)}&`;
-        url += `title=${encodeURIComponent(body)}&`;
+        url += `body=${encodeURIComponent(body)}&`;
+        return url;
     }
     
     // Set box callbacks
