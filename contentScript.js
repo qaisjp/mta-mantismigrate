@@ -42,7 +42,7 @@ function buildGitHubBox(bugData, templateText) {
     // Change note to "description"
     const descrEl = cloned.querySelector("table>tbody>tr:nth-child(2)");
     descrEl.children[0].innerHTML = "Description";
-    descrEl.children[1].children[0].value = templateText;
+    descrEl.children[1].children[0].value = templateText + "\nFrom https://bugs.mtasa.com/view.php?id=" + bugData.id;
 
     // Create a title obj
     const titleEl = document.createElement("tr");
