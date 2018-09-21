@@ -129,8 +129,8 @@ async function useTemplate(template, label) {
 
     // Set navbar not fixed top because space is important
     // document.querySelector("#navbar").classList.remove("navbar-fixed-top");
-    document.querySelector("html").style.marginTop = "50vh";
-    document.querySelector("#main-container").style.paddingTop = "0";
+    document.querySelector("html").style.marginRight = "50vw";
+    // document.querySelector("#main-container").style.paddingTop = "0";
 
 
     // Build GitHub box
