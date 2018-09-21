@@ -8,7 +8,7 @@
 
     "content_scripts": [
         {
-            "matches": ["https://bugs.mtasa.com/view.php*"],
+            "matches": ["https://bugs.mtasa.com/view.php*", "https://bugs.mtasa.com/bug_update_page.php*"],
             "js": ["contentScript.js"],
             "css": ["styles.css"]
         }

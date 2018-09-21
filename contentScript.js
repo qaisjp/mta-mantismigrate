@@ -57,12 +57,9 @@ function buildGitHubBox(bugData, templateText) {
     attach.children[0].innerHTML = "Guidance";
     attach.children[1].innerHTML = `
 Use <a href="https://guides.github.com/features/mastering-markdown/">GitHub Flavoured Markdown</a>. Lists and code should be well formatted.
+You can syntax-highlight code by providing the language after the backticks, like so: \`\`\`lua. Don't forget quotes. Spaces for lists!
 <br>
-You can syntax-highlight code by providing the language after the backticks, like so: \`\`\`lua
-<br>
-<strong>If a bug is confirmed</strong>, set the milestone on GitHub to "Backlog".
-<br>
-<strong>Once GH issue made: </strong>Paste the issue url below and click "comment & close".
+<strong>Once GH issue made: </strong>Paste the issue url below and click "finish up".
     `;
 
     // Grab the submit button and replace it
@@ -72,8 +69,8 @@ You can syntax-highlight code by providing the language after the backticks, lik
         </button>
         <span id="mantismigrate-finishup">
             <input type=text style="width:60%!important;" placeholder="FILL ME IN https://github.com/multitheftauto/mtasa-blue/issue/100">
-            <button class="btn btn-primary btn-white btn-round">
-            Leave comment
+            <button class="btn btn-primary btn-black btn-sm btn-round">
+            Finish up
             </button>
         </span>
     `
@@ -151,7 +148,8 @@ async function useTemplate(template, label) {
     }
 
     box.onFinishIssue = async (url) => {
-        document.querySelector("#bugnote_text").value = "Moved to " + url;
+        window.location.href = `/bug_update_page.php?bug_id=${bugData.id}&mantismigrate=${encodeURIComponent(url)}`
+        // document.querySelector("#bugnote_text").value = "Moved to " + url;
 
         // close and suspend
         // const status = 90;
@@ -178,7 +176,7 @@ async function useTemplate(template, label) {
         // });
         // console.log(response);
 
-        document.querySelector("#bugnoteadd").submit();
+        // document.querySelector("#bugnoteadd").submit();
     }
 }
 
@@ -193,8 +191,14 @@ function addActionButtons() {
     bugBtn.classList.add("btn", "btn-primary", "btn-black", "btn-round", "btn-sm");
     bugBtn.innerHTML = "To GitHub bug";
 
+    // const susClose = document.createElement("a");
+    // susClose.classList.add("btn", "btn-primary", "btn-black", "btn-round", "btn-sm");
+    // susClose.setAttribute("href", `https://bugs.mtasa.com/bug_update_page.php?bug_id=${getBugData().id}&mantismigrate=1`)
+    // susClose.innerHTML = "Suspend & close";
+
     toolbox.appendChild(featBtn);
     toolbox.appendChild(bugBtn);
+    // toolbox.appendChild(susClose);
 
     featBtn.addEventListener("click", e => {
         useTemplate("feature_request.md", "enhancement");
@@ -238,7 +242,24 @@ function getBugData() {
     };
 }
 
+function performSuspendAndClose() {
+    let urlParams = new URLSearchParams(window.location.search);
+    const ghurl = urlParams.get('mantismigrate');
+    if (!ghurl) {
+        return;
+    }
+    document.querySelector("#status").value = "90"
+    document.querySelector("#resolution").value = "80"
+    document.querySelector("#bugnote_text").value = "Moved to " + decodeURIComponent(ghurl);
+    document.querySelector("#update_bug_form").submit();
+}
+
 function main() {
+    // If bug_update_page
+    if (location.pathname === "/bug_update_page.php") {
+        performSuspendAndClose();
+        return;
+    }
     // Don't run our code on the wrong pages
     if (location.pathname !== "/view.php") {
         console.log("Not on view.php page")
