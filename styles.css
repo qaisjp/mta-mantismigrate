@@ -1,0 +1,19 @@
+.mantismigrate-fixed {
+    position: fixed !important;
+    bottom: 50vh;
+    height: 0;
+    z-index: 2000;
+    left: 0;
+}
+
+.mantismigrate-hidden {
+    display: none;
+}
+
+.mantismigrate-fixed #githubissue_text {
+    height: 25vh;
+}
+
+body {
+    padding-bottom: 20vh;
+}
