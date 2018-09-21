@@ -1,7 +1,8 @@
 function buildGitHubBox(bugData, templateText) {
     const box = {
         onCreateIssue: (title, body, withMilestone) => {},
-        onFinishIssue: () => {},
+        // getOpenedURL: () => "",
+        onFinishIssue: (url) => {},
     };
 
     // Clone the note box
@@ -69,17 +70,15 @@ You can syntax-highlight code by providing the language after the backticks, lik
         <button id="mantismigrate-createissue" class="btn btn-primary btn-white btn-round">
             Create issue on GitHub
         </button>
-        <div class="input-group" id="mantismigrate-finishup" class="mantismigrate-hidden">
-            <span class="input-group-btn">
-            <button type=button class="btn btn-primary btn-white btn-round">
-            Finish up
+        <span id="mantismigrate-finishup">
+            <input type=text style="width:60%!important;" placeholder="FILL ME IN https://github.com/multitheftauto/mtasa-blue/issue/100">
+            <button class="btn btn-primary btn-white btn-round">
+            Leave comment
             </button>
-            </span>
-            <input type=text class="form-control" placeholder="https://github.com/multitheftauto/mtasa-blue/pull/100">
-        </div>
+        </span>
     `
 
-    const createissue = cloned.querySelector("#mantismigrate-createissue").addEventListener("click", e => {
+    cloned.querySelector("#mantismigrate-createissue").addEventListener("click", e => {
         e.preventDefault();
         box.onCreateIssue(
             titleEl.querySelector("input").value,
@@ -88,6 +87,22 @@ You can syntax-highlight code by providing the language after the backticks, lik
         )
     })
 
+    const newIssueInput = cloned.querySelector("#mantismigrate-finishup > input");
+
+    cloned.querySelector("#mantismigrate-finishup > button").addEventListener("click", e => {
+        e.preventDefault();
+        const url = newIssueInput.value;
+        if (url === "") {
+            alert("please fill in gh issue url");
+            return;
+        }
+        if (!url.startsWith("https://github.com/multitheftauto/mtasa-blue/issues/")) {
+            alert("url must start with https://github.com/multitheftauto/mtasa-blue/issues/");
+            return;
+        }
+
+        box.onFinishIssue(url);
+    })
 
     // Finally append
     notebox.parentElement.appendChild(cloned);
@@ -133,6 +148,37 @@ async function useTemplate(template, label) {
     box.onCreateIssue = (title, body, withMilestone) => {
         const url = buildURL(title, body, bugData.assignee, withMilestone);
         window.open(url);
+    }
+
+    box.onFinishIssue = async (url) => {
+        document.querySelector("#bugnote_text").value = "Moved to " + url;
+
+        // close and suspend
+        // const status = 90;
+        // const resolution = 80;
+        // const bug_id = bugData.id;
+        // const last_updated = Date.now();
+        // const handler_id = 0;
+        // const form = new FormData();
+        // form.append('status', 90);
+        // form.append('resolution', 80);
+        // form.append('bug_id', bugData.id)
+        // form.append('last_updated', Date.now()+5000)
+        // form.append('handler_id', 0);
+        // // https://github.com/multitheftauto/mtasa-blue/issues/530
+
+        // const response = await fetch("https://bugs.mtasa.com/bug_update.php", {
+        //     method: "POST",
+        //     credentials: "same-origin",
+        //     redirect: "follow",
+        //     body: form,
+        //     // headers: {
+        //     //     'Content-Type': 'application/x-www-form-urlencoded;'
+        //     // }
+        // });
+        // console.log(response);
+
+        document.querySelector("#bugnoteadd").submit();
     }
 }
 
