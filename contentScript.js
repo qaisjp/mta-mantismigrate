@@ -36,6 +36,7 @@ function buildGitHubBox(bugData) {
     // Change note to "description"
     const descrEl = cloned.querySelector("table>tbody>tr:nth-child(2)");
     descrEl.children[0].innerHTML = "Description";
+    descrEl.children[1].children[0].value = bugData.description;
 
     // Create a title obj
     const titleEl = document.createElement("tr");
@@ -146,8 +147,12 @@ function isLoggedIn() {
 }
 
 function getBugData() {
+    const idStr = getTableField("id");
     return {
         status: getTableField("status"),
+        title: getTableField("summary").slice(idStr.length+2),
+        description: getTableField("description"),
+        id: parseInt(idStr),
     };
 }
 
