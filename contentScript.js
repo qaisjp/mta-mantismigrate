@@ -79,7 +79,7 @@ You can syntax-highlight code by providing the language after the backticks, lik
         e.preventDefault();
         box.onCreateIssue(
             titleEl.querySelector("input").value,
-            descrEl.children[1].children[0].value,
+            descrEl.querySelector("textarea").value,
             checkboxInput.checked
         )
     })
