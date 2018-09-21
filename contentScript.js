@@ -1,4 +1,10 @@
 function buildGitHubBox(bugData, templateText) {
+    // Delete old one
+    const old = document.querySelector(".mantismigrate-fixed");
+    if (old) {
+        old.outerHTML = ``;
+    }
+
     const box = {
         onCreateIssue: (title, body, withMilestone) => {},
         // getOpenedURL: () => "",
