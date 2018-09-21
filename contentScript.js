@@ -131,7 +131,7 @@ async function useTemplate(template, label) {
     
     // Set box callbacks
     box.onCreateIssue = (title, body, withMilestone) => {
-        const url = buildURL(title, body, "qaisjp", withMilestone);
+        const url = buildURL(title, body, bugData.assignee, withMilestone);
         window.open(url);
     }
 }
@@ -176,11 +176,19 @@ function isLoggedIn() {
 
 function getBugData() {
     const idStr = getTableField("id");
+    let assignee = getTableField("assigned-to");
+    if (assignee === "ccw") {
+        assignee = "ccw808";
+    } else if (assignee === "myonlake") {
+        assignee = "patrikjuvonen";
+    }
+
     return {
         status: getTableField("status"),
         title: getTableField("summary").slice(idStr.length+2),
         description: getTableField("description"),
         id: parseInt(idStr),
+        assignee: assignee,
     };
 }
 
