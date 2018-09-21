@@ -1,6 +1,6 @@
 .mantismigrate-fixed {
     position: fixed !important;
-    bottom: 50vh;
+    bottom: 60vh;
     height: 0;
     z-index: 2000;
     left: 0;
